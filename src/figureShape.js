@@ -5,6 +5,7 @@ class FigureShape {
     this.color = SHAPES[figure].color;
     this.position = initialPosition;
     this.cubes = [];
+    
   }
   initializeCubes(){
     this.cubes = [];
@@ -17,6 +18,13 @@ class FigureShape {
         }
       }
     }
+    let M = this.matrix;
+    const depth = M.length;
+    const height = M[0].length;
+    const width = M[0][0].length;
+    let rotated = [];
+    console.log("depth: " + depth + " height: " + height + " width: " + width);
+    console.log(M);
   }
 
   display() {
@@ -25,68 +33,86 @@ class FigureShape {
       this.cubes[i].display();
     }
   }
-
-  rotateX() {
-    const depth = this.matrix.length;
-    const height = this.matrix[0].length;
-    const width = this.matrix[0][0].length;
-    let rotated = [];
-
-    for (let x = 0; x < width; x++) {
+  makeShape(shape){
+    let M = []
+    for (let i = 0; i < shape[0]; i++) {
       let layer = [];
-      for (let z = depth - 1; z >= 0; z--) {
+      for (let j = 0; j < shape[1]; j++) {
         let row = [];
-        for (let y = 0; y < height; y++) {
-          row.push(this.matrix[z][y][x]);
+        for (let k = 0; k < shape[2]; k++) {
+          row.push(0);
         }
         layer.push(row);
       }
-      rotated.push(layer);
+      M.push(layer);
+    }
+    return M;
+  }
+
+  rotateAxisMatrix(M, axis) {
+    // axis 0 -> z , 1 -> y , 2 -> x
+    const Z = M.length;
+    const Y = M[0].length;
+    const X = M[0][0].length;
+    // make an empty matrix of the new dimentions
+    let newDimentions = [Z, Y, X];
+    let rotated = [];
+    // diferent dimentions according to the axis
+    switch (axis) {
+      case 0:
+        newDimentions = [Y, Z, X];
+        rotated = this.makeShape(newDimentions);
+        break;
+      case 1:
+        newDimentions = [X, Y, Z];
+        rotated = this.makeShape(newDimentions);
+        break;
+      case 2:
+        newDimentions = [Z, X, Y];
+        rotated = this.makeShape(newDimentions);
+        break;
+      default:
+        break;
     }
 
-    this.matrix = rotated.map(layer => layer.reverse());
+    console.log("depth: " + Z + " height: " + height + " width: " + width);
+    console.log(M);
+    console.log(rotated);
+    for (let i = 0; i < Z; i++) {
+      for (let j = 0; j < Y; j++) {
+        for (let k = 0; k < X; k++) {
+          // diferent elements according to the axis
+          switch (axis) {
+            case 0:
+              rotated[Y-1-j][i][k] = this.matrix[i][j][k];
+              break;
+            case 1:
+              rotated[X-1-k][j][i] = this.matrix[i][j][k];
+              break;
+            case 2:
+              rotated[i][k][Y-1-j] = this.matrix[i][j][k];
+              break;
+          
+            default:
+              rotated[i][j][k] = this.matrix[i][j][k]
+          }
+        }
+      }
+    }
+    return rotated;
+  }
+  
+  rotateZ(){
+    this.matrix =  this.rotateAxisMatrix(this.matrix, 0);
+
   }
 
   rotateY() {
-    const depth = this.matrix.length;
-    const height = this.matrix[0].length;
-    const width = this.matrix[0][0].length;
-    let rotated = [];
-
-    for (let y = 0; y < height; y++) {
-      let layer = [];
-      for (let x = 0; x < width; x++) {
-        let row = [];
-        for (let z = 0; z < depth; z++) {
-          row.push(this.matrix[z][y][width - 1 - x]);
-        }
-        layer.push(row);
-      }
-      rotated.push(layer);
-    }
-
-    this.matrix =  rotated;
+    this.matrix = this.rotateAxisMatrix(this.matrix, 1);
   }
 
-  rotateZ() {
-    const depth = this.matrix.length;
-    const height = this.matrix[0].length;
-    const width = this.matrix[0][0].length;
-    let rotated = [];
-
-    for (let z = 0; z < depth; z++) {
-      let layer = [];
-      for (let x = 0; x < width; x++) {
-        let row = [];
-        for (let y = height - 1; y >= 0; y--) {
-          row.push(this.matrix[z][y][x]);
-        }
-        layer.push(row);
-      }
-      rotated.push(layer);
-    }
-
-    this.matrix =  rotated;
+  rotateX() {
+    this.matrix = this.rotateAxisMatrix(this.matrix, 2);
   }
 
 }

@@ -14,10 +14,11 @@ function setup() {
   definePoints(MESH_LEN_X, MESH_LEN_Y, MESH_LEN_Z, SIZE, points);
   myFigure = new FigureShape(1, [0, 0, 0]);
   myUnitBox = new UnitBox(0, 0, 0, SIZE);
-  //myFigure.rotateY();
-  //myFigure.rotateY();
-  //myFigure.rotateY();
-  //myFigure.rotateY();
+  myFigure.initializeCubes();
+  // myFigure.rotateX();
+  // myFigure.rotateX();
+  // myFigure.rotateX();
+  // myFigure.rotateX();
 }
 
 function draw() {
@@ -26,9 +27,9 @@ function draw() {
   scale(1, -1, 1);
   //translate(-width/2 + 50 , -height/2 +40);
   drawMesh(MESH_LEN_X, MESH_LEN_Y, MESH_LEN_Z, SIZE);
-  drawPoints(points);
-  myFigure.initializeCubes();
+  // drawPoints(points);
   myFigure.display();
+  // drawPoints (points)
   // myUnitBox.display();
 }
 
@@ -108,5 +109,24 @@ function definePoints(x, y, z, sizeOfCells, points) {
 function drawPoints(points) {
   for (let i = 0; i < points.length; i++) {
     point(points[i].x, points[i].y, points[i].z);
+  }
+}
+// when mouse is clicked, rotate the figure on axix x
+function mousePressed() {
+  // myFigure.rotateZ();
+  // myFigure.initializeCubes();
+}
+function keyPressed() {
+  if (key === 'a'){
+    myFigure.rotateX();
+    myFigure.initializeCubes();
+  }
+  if (key === 's'){
+    myFigure.rotateY();
+    myFigure.initializeCubes();
+  }
+  if (key === 'd'){
+    myFigure.rotateZ();
+    myFigure.initializeCubes();
   }
 }
