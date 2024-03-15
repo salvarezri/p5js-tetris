@@ -14,11 +14,6 @@ function setup() {
   definePoints(MESH_LEN_X, MESH_LEN_Y, MESH_LEN_Z, SIZE, points);
   myFigure = new FigureShape(1, [0, 0, 0]);
   myUnitBox = new UnitBox(0, 0, 0, SIZE);
-  myFigure.initializeCubes();
-  // myFigure.rotateX();
-  // myFigure.rotateX();
-  // myFigure.rotateX();
-  // myFigure.rotateX();
 }
 
 function draw() {
@@ -119,14 +114,11 @@ function mousePressed() {
 function keyPressed() {
   if (key === 'a'){
     myFigure.rotateX();
-    myFigure.initializeCubes();
   }
   if (key === 's'){
     myFigure.rotateY();
-    myFigure.initializeCubes();
   }
   if (key === 'd'){
     myFigure.rotateZ();
-    myFigure.initializeCubes();
   }
 }

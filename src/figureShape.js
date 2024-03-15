@@ -5,9 +5,10 @@ class FigureShape {
     this.color = SHAPES[figure].color;
     this.position = initialPosition;
     this.cubes = [];
+    this.asignCubes();
     
   }
-  initializeCubes(){
+  asignCubes(){
     this.cubes = [];
     for (let z = 0; z < this.matrix.length; z++) {
       for (let y = 0; y < this.matrix[z].length; y++) {
@@ -34,6 +35,7 @@ class FigureShape {
     }
   }
   makeShape(shape){
+    // make a 3D matrix of zeros with the given shape [Z,Y,X]
     let M = []
     for (let i = 0; i < shape[0]; i++) {
       let layer = [];
@@ -81,7 +83,7 @@ class FigureShape {
     for (let i = 0; i < Z; i++) {
       for (let j = 0; j < Y; j++) {
         for (let k = 0; k < X; k++) {
-          // diferent elements according to the axis
+          // asign diferent elements according to the axis
           switch (axis) {
             case 0:
               rotated[Y-1-j][i][k] = this.matrix[i][j][k];
@@ -104,15 +106,17 @@ class FigureShape {
   
   rotateZ(){
     this.matrix =  this.rotateAxisMatrix(this.matrix, 0);
-
+    this.asignCubes();
   }
 
   rotateY() {
     this.matrix = this.rotateAxisMatrix(this.matrix, 1);
+    this.asignCubes();
   }
 
   rotateX() {
     this.matrix = this.rotateAxisMatrix(this.matrix, 2);
+    this.asignCubes();
   }
 
 }
